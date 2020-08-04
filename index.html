@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="randomPin" class="form-control text-center" type="text" placeholder="_ _ _ _">
+                    <button onclick = generatePin() class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="number" class="form-control text-center" type="text" placeholder="_ _ _ _">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div onclick="pinCode(7)" class="button">7</div>
+                              <div onclick="pinCode(8)" class="button">8</div>
+                              <div onclick="pinCode(9)" class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div onclick="pinCode(4)" class="button">4</div>
+                              <div onclick="pinCode(5)" class="button">5</div>
+                              <div onclick="pinCode(6)" class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div onclick="pinCode(1)" class="button">1</div>
+                              <div onclick="pinCode(2)" class="button">2</div>
+                              <div onclick="pinCode(3)" class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div onclick = removeNum() class="button"><</div>
+                                <div onclick="pinCode(0)" class="button">0</div>
+                                <div onclick = clearAll() class="button">C</div>
+                            </div>
+                            <div>
+                                <button id="submitBtn" type="submit" onclick="submitNum()" class="submit-btn">Submit</button>
+                                <p id="try-left" class="action-left">3 try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p id="pinMisMatched" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="pinMatched" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+    <script>
+        // Generate Pin
+        function generatePin(){
+            document.getElementById('randomPin').value = Math.floor(Math.random() * 5999 + 4000);
+        }
+        // PinCode
+        function pinCode(pin) {
+    document.getElementById('number').value = document.getElementById('number').value + pin;
+    }
+    // Number Remove
+    function removeNum() {
+    let inputNum = document.getElementById('number').value;
+    document.getElementById('number').value = inputNum.substring(0, inputNum.length - 1);
+    }
+    function clearAll() {
+    document.getElementById('number').value = "";
+    }
+    // Submit Number
+    function submitNum(){
+        let generatePin = document.getElementById('randomPin').value;
+        let inputPin = document.getElementById('number').value;
+        if(inputPin == generatePin){
+            document.getElementById('pinMatched').style.display = 'block';
+            document.getElementById('pinMisMatched').style.display = 'none';
+        }
+        else{
+            document.getElementById("pinMatched").style.display = "none";
+            document.getElementById("pinMisMatched").style.display = "block";
+            tryLeft()
+        }
+    }
+    // TryLeft Function
+    let count = 0;
+
+    function tryLeft(){
+        let generatePin = document.getElementById('randomPin').value;
+        let inputPin = document.getElementById('number').value;
+        count++
+        if(count == 1 && inputPin !== generatePin){
+            document.getElementById("try-left").innerText = "2 try left"
+        }
+        else if(count== 2 && inputPin !== generatePin){
+            document.getElementById("try-left").innerText = "1 try left"
+        }
+        else if(count== 3 && inputPin !== generatePin){
+            document.getElementById("try-left").innerText = "0 try left"
+        document.getElementById("submitBtn").disabled = true;
+        document.getElementById("submitBtn").style.background= '#425062';
+        }
+    }
+    </script>
+</body>
+</html>
